@@ -17,6 +17,46 @@ class Database {
         return $this->conn;
     }
 
+
+    // Función para validar usuario
+    public function validarUsuario($nombre_o_email, $password) {
+        $query = "SELECT id_usuario, nombre_usuario, password, verificado, id_estado FROM usuarios WHERE nombre_usuario = :nombre_o_email OR email = :nombre_o_email LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':nombre_o_email', $nombre_o_email);
+        $stmt->execute();
+    
+        if ($stmt->rowCount() > 0) {
+            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            // Verificar si la cuenta está verificada
+            if ($usuario['verificado'] == 0) {
+                return ["status" => "error", "message" => "La cuenta no está verificada."];
+            }
+    
+            // Verificar el estado del usuario
+            if ($usuario['id_estado'] != 1) { // Verificar que id_estado sea 1 (habilitado)
+                return ["status" => "error", "message" => "La cuenta está suspendida o eliminada."];
+            }
+    
+            // Verificar la contraseña
+            if (password_verify($password, $usuario['password'])) {
+                return [
+                    "status" => "success",
+                    "user" => [
+                        "sesion iniciada",
+                        "id_usuario" => $usuario['id_usuario'],
+                        "nombre_usuario" => $usuario['nombre_usuario'],
+                        "id_estado" => $usuario['id_estado']
+                    ]
+                ];
+            } else {
+                return ["status" => "error", "message" => "Contraseña incorrecta."];
+            }
+        } else {
+            return ["status" => "error", "message" => "El usuario no existe."];
+        }
+    }
+
     // Nuevo método para obtener usuarios
     public function getUsuarios() {
         $query = "SELECT * FROM usuarios";
@@ -55,11 +95,18 @@ class Database {
         $stmtInsert->bindParam(':token_verificacion', $token_verificacion);
 
         if ($stmtInsert->execute()) {
+            $this->enviarCorreoVerificacion($email, $token_verificacion);
             return ["status" => "success", "message" => "Usuario registrado correctamente. Verifique su correo para activar la cuenta."];
         } else {
             return ["status" => "error", "message" => "No se pudo registrar el usuario."];
         }
     }
+
+
+    public function enviarCorreoVerificacion($email, $token_verificacion) {
+        
+    }
+
 }
 ?>
 
