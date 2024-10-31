@@ -1,4 +1,12 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+require '../PHPMailer/src/Exception.php';
+
 class Database {
     private $host = "localhost";
     private $db_name = "foro_virtual";
@@ -104,8 +112,40 @@ class Database {
 
 
     public function enviarCorreoVerificacion($email, $token_verificacion) {
+        $mail = new PHPMailer(true);
         
+        try {
+            // Configuración del servidor de correo
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'florrolito@gmail.com'; // Tu dirección de correo
+            $mail->Password = 'soez kekb uxzb umac'; // Tu contraseña de aplicación de Gmail
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            // Configuración del remitente y destinatario
+            $mail->setFrom('florrolito@gmail.com', 'foro_virtual');
+            $mail->addAddress($email); // Email y nombre del destinatario
+
+            // Contenido del correo
+            $mail->isHTML(true);
+            $mail->Subject = 'Verificación de Cuenta';
+            $mail->Body = "
+                <h1>Verificación de Cuenta</h1>
+                <p>Gracias por registrarte. Haz clic en el enlace a continuación para verificar tu cuenta:</p>
+                <a href='http://tu_dominio.com/verificar.php?token=$token_verificacion'>Verificar Cuenta</a>
+                <p>Si no solicitaste este registro, ignora este correo.</p>
+            ";
+
+            // Enviar el correo
+            $mail->send();
+            return ["status" => "success", "message" => "Correo enviado correctamente."];
+        } catch (Exception $e) {
+            return ["status" => "error", "message" => "No se pudo enviar el correo. Error: " . $mail->ErrorInfo];
+        }
     }
+    
 
 }
 ?>
