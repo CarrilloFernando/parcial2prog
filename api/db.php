@@ -134,7 +134,7 @@ class Database {
             $mail->Body = "
                 <h1>Verificación de Cuenta</h1>
                 <p>Gracias por registrarte. Haz clic en el enlace a continuación para verificar tu cuenta:</p>
-                <a href='http://tu_dominio.com/verificar.php?token=$token_verificacion'>Verificar Cuenta</a>
+                <a href='http://localhost/parcial/api/verificar.php?token=$token_verificacion'>Verificar Cuenta</a>
                 <p>Si no solicitaste este registro, ignora este correo.</p>
             ";
 
