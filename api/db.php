@@ -146,7 +146,41 @@ class Database {
         }
     }
     
-
+    public function enviarCorreoRecuperacion($email, $token_recuperacion) {
+        $mail = new PHPMailer(true);
+        
+        try {
+            // Configuración del servidor SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'florrolito@gmail.com';
+            $mail->Password = 'soez kekb uxzb umac'; // Contraseña de aplicación de Gmail
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+    
+            // Configuración del remitente y destinatario
+            $mail->setFrom('florrolito@gmail.com', 'Foro Virtual');
+            $mail->addAddress($email);
+    
+            // Contenido del correo
+            $mail->isHTML(true);
+            $mail->Subject = 'Recuperación de Contraseña';
+            $mail->Body = "
+                <h1>Recuperación de Contraseña</h1>
+                <p>Hemos recibido una solicitud para restablecer tu contraseña. Haz clic en el enlace a continuación para establecer una nueva contraseña:</p>
+                <a href='http://tu_dominio.com/restablecer.php?token=$token_recuperacion'>Restablecer Contraseña</a>
+                <p>Si no solicitaste este cambio, ignora este correo.</p>
+            ";
+    
+            // Enviar el correo
+            $mail->send();
+            return ["status" => "success", "message" => "Correo de recuperación enviado correctamente."];
+        } catch (Exception $e) {
+            return ["status" => "error", "message" => "No se pudo enviar el correo. Error: " . $mail->ErrorInfo];
+        }
+    }
+    
 }
 ?>
 
