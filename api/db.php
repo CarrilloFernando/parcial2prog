@@ -73,7 +73,7 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Método para insertar un nuevo usuario
+    // Metodo para insertar un nuevo usuario
     public function insertarUsuario($nombre_usuario, $email, $password) {
         // Verificar si el nombre de usuario o email ya existen
         $queryCheck = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = :nombre_usuario OR email = :email";
@@ -119,8 +119,8 @@ class Database {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'florrolito@gmail.com'; // Tu dirección de correo
-            $mail->Password = 'soez kekb uxzb umac'; // Tu contraseña de aplicación de Gmail
+            $mail->Username = 'florrolito@gmail.com'; //dirección de corro
+            $mail->Password = 'soez kekb uxzb umac'; //contraseña de aplicación de Gmail
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
