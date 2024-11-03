@@ -50,8 +50,8 @@ class Database {
             if (password_verify($password, $usuario['password'])) {
                 return [
                     "status" => "success",
+                    "message" => "Sesión iniciada correctamente.",
                     "user" => [
-                        "sesion iniciada",
                         "id_usuario" => $usuario['id_usuario'],
                         "nombre_usuario" => $usuario['nombre_usuario'],
                         "id_estado" => $usuario['id_estado']
@@ -64,6 +64,7 @@ class Database {
             return ["status" => "error", "message" => "El usuario no existe."];
         }
     }
+    
 
     // Nuevo método para obtener usuarios
     public function getUsuarios() {
@@ -75,24 +76,34 @@ class Database {
 
     // Metodo para insertar un nuevo usuario
     public function insertarUsuario($nombre_usuario, $email, $password) {
-        // Verificar si el nombre de usuario o email ya existen
-        $queryCheck = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = :nombre_usuario OR email = :email";
-        $stmtCheck = $this->conn->prepare($queryCheck);
-        $stmtCheck->bindParam(':nombre_usuario', $nombre_usuario);
-        $stmtCheck->bindParam(':email', $email);
-        $stmtCheck->execute();
+        // Verificar si el nombre de usuario ya existe
+        $queryCheckUsername = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = :nombre_usuario";
+        $stmtCheckUsername = $this->conn->prepare($queryCheckUsername);
+        $stmtCheckUsername->bindParam(':nombre_usuario', $nombre_usuario);
+        $stmtCheckUsername->execute();
         
-        if ($stmtCheck->fetchColumn() > 0) {
-            // Retornar un error si el usuario o email ya existen
-            return ["status" => "error", "message" => "El nombre de usuario o email ya existen."];
+        if ($stmtCheckUsername->fetchColumn() > 0) {
+            // Retornar un error específico si el nombre de usuario ya existe
+            return ["status" => "error", "message" => "El nombre de usuario ya existe."];
         }
-
+        
+        // Verificar si el email ya existe
+        $queryCheckEmail = "SELECT COUNT(*) FROM usuarios WHERE email = :email";
+        $stmtCheckEmail = $this->conn->prepare($queryCheckEmail);
+        $stmtCheckEmail->bindParam(':email', $email);
+        $stmtCheckEmail->execute();
+        
+        if ($stmtCheckEmail->fetchColumn() > 0) {
+            // Retornar un error específico si el email ya existe
+            return ["status" => "error", "message" => "El email ya está registrado."];
+        }
+    
         // Hashear la contraseña
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
-
+    
         // Generar un token de verificación único
         $token_verificacion = bin2hex(random_bytes(16));
-
+    
         // Insertar el nuevo usuario con estado "Pendiente de verificación"
         $queryInsert = "INSERT INTO usuarios (nombre_usuario, email, password, verificado, token_verificacion, id_estado) 
                         VALUES (:nombre_usuario, :email, :password, 0, :token_verificacion, 4)";
@@ -101,7 +112,7 @@ class Database {
         $stmtInsert->bindParam(':email', $email);
         $stmtInsert->bindParam(':password', $passwordHash);
         $stmtInsert->bindParam(':token_verificacion', $token_verificacion);
-
+    
         if ($stmtInsert->execute()) {
             $this->enviarCorreoVerificacion($email, $token_verificacion);
             return ["status" => "success", "message" => "Usuario registrado correctamente. Verifique su correo para activar la cuenta."];
@@ -109,6 +120,7 @@ class Database {
             return ["status" => "error", "message" => "No se pudo registrar el usuario."];
         }
     }
+    
 
 
     public function enviarCorreoVerificacion($email, $token_verificacion) {
@@ -169,9 +181,10 @@ class Database {
             $mail->Body = "
                 <h1>Recuperación de Contraseña</h1>
                 <p>Hemos recibido una solicitud para restablecer tu contraseña. Haz clic en el enlace a continuación para establecer una nueva contraseña:</p>
-                <a href='http://tu_dominio.com/restablecer.php?token=$token_recuperacion'>Restablecer Contraseña</a>
+                <a href='http://localhost/parcial/login/cambiar_password.php?token=$token_recuperacion'>Restablecer Contraseña</a>
                 <p>Si no solicitaste este cambio, ignora este correo.</p>
             ";
+
     
             // Enviar el correo
             $mail->send();

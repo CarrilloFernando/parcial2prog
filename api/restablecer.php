@@ -1,35 +1,42 @@
 <?php
 require_once 'db.php';
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
     $db_con = $db->obtenerConexion();
 
-    // Obtener el contenido de la solicitud y decodificar JSON
     $json = file_get_contents("php://input");
     $data = json_decode($json, true);
-
-    // Verificación de datos decodificados
-    if (!$data) {
-        echo json_encode(["status" => "error", "message" => "No se recibieron datos JSON válidos."]);
-        exit;
-    }
 
     $token = $data['token'] ?? null;
     $nueva_password = $data['nueva_password'] ?? null;
 
     if ($token && $nueva_password) {
-        // Hashear la nueva contraseña
-        $hashed_password = password_hash($nueva_password, PASSWORD_BCRYPT);
+        // Primero, verificar si el token existe en la base de datos
+        $queryCheck = "SELECT id_usuario FROM usuarios WHERE token_verificacion = :token";
+        $stmtCheck = $db_con->prepare($queryCheck);
+        $stmtCheck->bindParam(':token', $token);
+        $stmtCheck->execute();
 
-        // Verificar el token y actualizar la contraseña
-        $query = "UPDATE usuarios SET password = :password, token_verificacion = NULL WHERE token_verificacion = :token";
-        $stmt = $db_con->prepare($query);
-        $stmt->bindParam(':password', $hashed_password);
-        $stmt->bindParam(':token', $token);
+        if ($stmtCheck->rowCount() > 0) {
+            // Hashear la nueva contraseña
+            $hashed_password = password_hash($nueva_password, PASSWORD_BCRYPT);
 
-        if ($stmt->execute()) {
-            echo json_encode(["status" => "success", "message" => "Contraseña actualizada correctamente."]);
+            // Actualizar la contraseña y limpiar el token de verificación
+            $queryUpdate = "UPDATE usuarios SET password = :password, token_verificacion = NULL WHERE token_verificacion = :token";
+            $stmtUpdate = $db_con->prepare($queryUpdate);
+            $stmtUpdate->bindParam(':password', $hashed_password);
+            $stmtUpdate->bindParam(':token', $token);
+
+            if ($stmtUpdate->execute()) {
+                echo json_encode(["status" => "success", "message" => "Contraseña actualizada correctamente."]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "Error al actualizar la contraseña."]);
+            }
         } else {
             echo json_encode(["status" => "error", "message" => "El token es inválido o ha expirado."]);
         }
@@ -38,3 +45,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+

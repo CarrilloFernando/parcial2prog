@@ -10,8 +10,8 @@
 <body>
     <div class="form-container">
         <h2>Iniciar Sesión</h2>
-        <form id="registroForm">
-            <input type="text" id="username" placeholder="Nombre de usuario o correo" required>
+        <form id="loginForm">
+            <input type="text" id="usernameOrEmail" placeholder="Nombre Usuario o email" required>
             <input type="password" id="password" placeholder="Contraseña" required>
             <div class="captcha-container">
                 <div class="g-recaptcha" data-sitekey="6LdVknMqAAAAAKWuPqraB1YnVFMvAwMJ3zsL_53_"></div>
@@ -20,7 +20,9 @@
         </form>
         <p>¿No tienes una cuenta? <a href="registro.php">Regístrate</a></p>
         <p><a href="reset_password.php">¿Olvidaste tu contraseña?</a></p>
+        <div id="loginMessage"></div> <!-- Aquí se mostrará el mensaje de respuesta -->
     </div>
-    <script src="/js/script.js"></script>
+    <script src="logearse.js"></script>
 </body>
 </html>
+

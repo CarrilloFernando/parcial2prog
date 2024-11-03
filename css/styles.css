@@ -14,7 +14,7 @@ body {
 
 .form-container {
     background-color: #fff;
-    padding: 20px;
+    padding: 5px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
@@ -36,10 +36,16 @@ form input[type="password"] {
     border-radius: 5px;
 }
 
+.captcha-container {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+}
+
 button {
     width: 100%;
     padding: 10px;
-    background-color: #5c6bc0;
+    background-color: #283db4;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -47,7 +53,7 @@ button {
 }
 
 button:hover {
-    background-color: #3f51b5;
+    background-color: #172784;
 }
 
 a {

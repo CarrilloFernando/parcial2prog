@@ -11,10 +11,10 @@
         <h2>Restablecer Contraseña</h2>
         <form id="reset-password-form">
             <input type="email" id="email" placeholder="Correo Electrónico" required>
-            <button type="submit">Solicitar Restablecimiento</button>
+            <button type="submit">Solicitar Restablecimiento</button><br></br>
             <a href="login_principal.php">Volver a atras</a>
         </form>
     </div>
-    <script src="js/script.js"></script>
+    <script src="reset_password.js"></script>
 </body>
 </html>

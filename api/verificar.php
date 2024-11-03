@@ -1,5 +1,9 @@
 <?php
-include 'db.php';
+require_once 'db.php';
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
 
 $db = new Database();
 $db_con = $db->obtenerConexion();
@@ -20,7 +24,9 @@ if (isset($_GET['token'])) {
         $stmtUpdate->bindParam(':token', $token);
 
         if ($stmtUpdate->execute()) {
-            echo "Cuenta verificada exitosamente y estado actualizado a habilitado.";
+            // Redirecciona al login principal
+            header("Location: http://localhost/parcial/login/login_principal.php");
+            exit(); // Asegura que se detiene el script después de la redirección
         } else {
             echo "Error al actualizar el estado del usuario.";
         }
@@ -30,4 +36,5 @@ if (isset($_GET['token'])) {
 } else {
     echo "Token no proporcionado.";
 }
+
 

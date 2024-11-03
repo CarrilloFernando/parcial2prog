@@ -12,10 +12,10 @@
         <form id="change-password-form">
             <input type="password" id="new-password" placeholder="Nueva Contraseña" required>
             <input type="password" id="confirm-new-password" placeholder="Confirmar Nueva Contraseña" required>
-            <button type="submit">Cambiar Contraseña</button>
-            <a href="login_principal.php">Volver a atras</a>
+            <button type="submit">Cambiar Contraseña</button><br></br>
+            
         </form>
     </div>
-    <script src="js/script.js"></script>
+    <script src="cambiar_password.js"></script>
 </body>
 </html>

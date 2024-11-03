@@ -10,21 +10,21 @@
     <div class="form-container">
         <h2>Registro de Usuario</h2>
         <form id="registroForm">
-        <label for="nombre">Nombre de Usuario:</label>
-        <input type="text" id="nombre" name="NOMBRE_USUARIO" required>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="EMAIL" required>
-        
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="PASSWORD" required>
-        
-        <button type="submit">Registrar</button>
-        <a href="login_principal.php">¿Ya tienes cuenta?</a>
-    </form>
+            
+            <input type="text" id="nombre_usuario" name="nombre_usuario" placeholder="Nombre de Usuario" required>
+            
+            
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            
+            
+            <input type="password" id="password" name="password" placeholder="Contraseña" required>
+            
+            <button type="submit">Registrar Usuario</button> <br></br>
+            <a href="login_principal.php">¿Ya tienes cuenta?</a>
+        </form>
     </div>
 
-    <script src="script.js"></script> <!-- Este es tu archivo de JavaScript -->
+    <script src="registrar_usuario.js"></script> <!-- Este es tu archivo de JavaScript -->
 </body>
 </html>
 
