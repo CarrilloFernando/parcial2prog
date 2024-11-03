@@ -1,7 +1,7 @@
 document.getElementById('change-password-form').addEventListener('submit', async function (e) {
-    e.preventDefault(); // Evita el envío tradicional del formulario
+    e.preventDefault(); 
 
-    // Obtiene el token de la URL
+    // Obtiene el token
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
 
@@ -32,11 +32,11 @@ document.getElementById('change-password-form').addEventListener('submit', async
 
         const result = await response.json();
 
-        // Muestra el mensaje en la interfaz
-        alert(result.message); // Muestra el mensaje del servidor
+        // muestra el mensaje en la interfaz
+        alert(result.message); // muestra el mensaje del servidor
 
         if (result.status === "success") {
-            // Redirige al usuario al login principal después de un cambio exitoso
+            // redirige al usuario al login principal después de un cambio exitoso
             window.location.href = 'login_principal.php';
         }
 

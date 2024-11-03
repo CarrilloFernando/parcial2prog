@@ -66,7 +66,7 @@ class Database {
     }
     
 
-    // Nuevo método para obtener usuarios
+    // Nuevo metodo para obtener usuarios
     public function getUsuarios() {
         $query = "SELECT * FROM usuarios";
         $stmt = $this->conn->prepare($query);
@@ -127,7 +127,7 @@ class Database {
         $mail = new PHPMailer(true);
         
         try {
-            // Configuración del servidor de correo
+            // Configuracion del servidor de correo
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;

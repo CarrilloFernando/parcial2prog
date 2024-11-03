@@ -22,21 +22,21 @@ document.getElementById('registroForm').addEventListener('submit', async functio
 
         const result = await response.json();
 
-        // Muestra un mensaje de alerta basado en la respuesta del servidor
+        // respuesta del servidor
         if (result.status === "success") {
             
-            window.location.href = "pagina_espera.php"; // Página de espera
+            window.location.href = "pagina_espera.php"; 
         } else {
             alert("Error en el registro: " + result.message);
         }
 
-        // También actualiza el mensaje en pantalla
+        // mensaje en pantalla
         document.getElementById('mensajeRespuesta').textContent = result.message;
         
     } catch (error) {
         console.error('Error en la solicitud:', error);
 
-        // Muestra un mensaje de alerta en caso de error en la solicitud
+        //e error en la solicitud
 
         // También actualiza el mensaje en pantalla
         document.getElementById('mensajeRespuesta').textContent = "Error en la solicitud. Inténtelo de nuevo.";

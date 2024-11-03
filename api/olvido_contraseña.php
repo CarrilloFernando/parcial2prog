@@ -9,12 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
     $db_con = $db->obtenerConexion();
 
-    // Decodificar el JSON recibido en el cuerpo
+    // Decodificar el jdon recibido
     $data = json_decode(file_get_contents("php://input"), true);
     $email = $data['email'] ?? null; // Usa null si 'email' no está presente
 
     if ($email) {
-        // Verificar si el email existe en la base de datos
+        // verificar si el email existe en la base de datos
         $query = "SELECT id_usuario FROM usuarios WHERE email = :email";
         $stmt = $db_con->prepare($query);
         $stmt->bindParam(':email', $email);
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtToken->bindParam(':email', $email);
             $stmtToken->execute();
 
-            // Enviar el correo de recuperación
+            // envia el correo de recuperación
             $resultado = $db->enviarCorreoRecuperacion($email, $token_recuperacion);
             echo json_encode($resultado);
         } else {

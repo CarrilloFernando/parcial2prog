@@ -20,7 +20,7 @@
         </form>
         <p>¿No tienes una cuenta? <a href="registro.php">Regístrate</a></p>
         <p><a href="reset_password.php">¿Olvidaste tu contraseña?</a></p>
-        <div id="loginMessage"></div> <!-- Aquí se mostrará el mensaje de respuesta -->
+        <div id="loginMessage"></div> 
     </div>
     <script src="logearse.js"></script>
 </body>

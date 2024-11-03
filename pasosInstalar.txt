@@ -1,0 +1,4 @@
+paso0: clonar el git en tu repositorio locar con "git clone <URL GITHUB>" dentro de xampp "htdocs"
+paso1: importar script foro_virtual.sql que tiene la bd con la tablas "usuarios" y "usuario_estado"
+paso2: para probar el sistema una vez habilitado xampp y cargado la bd ir al link: http://localhost/parcial/login/login_principal.php
+paso3: el index.php no es lo importante solo sirve cuando el usuario inicia sesion se dirije a esta pagina. el sismtema solo tiene alzcanze hasta alli, mas no hay logica que guarde la sesion o cerra sesion.
